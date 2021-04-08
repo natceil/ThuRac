@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en-vi">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>VNCERT/CC </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <style>
+        .border-barie {
+            border-right: solid 1px #cccccc;
+        }
+        tbody {
+            border-bottom: 1px solid #cccccc;
+        }
+        td,th {
+            border-right: 1px solid #dee2e6 !important;
+            text-align: center;
+            vertical-align: middle !important;
+        }
+        .top-barie {
+            border-top: 1px solid #dee2e6 !important;
+        }
+        .bottom-barie  {
+            border-bottom: 1px solid #dee2e6 !important;
+        }
+        .stylewidth {
+            min-width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand " href="#">VNCERT - 91</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/Admin/GetData">Báo cáo dữ liệu <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Admin/Dashboard/Sms">Dữ liệu tin nhắn</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Admin/Dashboard/Call">Dữ liệu cuộc gọi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Admin/Download">Xuất dữ liệu ra file Excel</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Thống kê</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<h2 class="ml-3 mt-3">Dữ liệu hệ thống tin nhắn, cuộc gọi rác</h2>
+
+<form action="/Admin/GetDataBrandByDay" method="GET">
+    <div style="display: flex;flex-direction: row;padding-left: 20px;padding-top: 20px">
+        <label for="telecomBrand" style="padding-top: 5px">Chọn nhà mạng:</label>
+        <select name="telecomBrand" id="telecomBrand" class="form-control ml-4" style="max-width: 300px" onchange="changeDownload()">
+            <option value="null"></option>
+            <option name="mobifone" value="mobifone">Mobifone</option>
+            <option name="viettel" value="viettel">Viettel</option>
+            <option name="vinaphone" value="vinaphone">Vinaphone</option>
+            <option name="vietnammobile" value="vietnammobile">Vietnammobile</option>
+            <option name="other" value="other">Other</option>
+        </select>
+
+        <label for="startDate" class=" ml-4" style="padding-top: 5px">Chọn ngày:</label>
+        <input type="date" id="startDate" name="startDate" value="DD-MM-YYYY" class="form-control ml-4" style="max-width: 300px">
+        <button type="submit" class="btn btn-primary ml-3" >Tìm kiếm</button>
+    </div>
+</form>
+
+<a href="/Admin/Download/Excel" id="download-excel"><button type="submit" class="btn btn-primary ml-3 mt-3">Xuất ra file excel</button></a>
+
+
+<div class="table-responsive pl-3 pr-3">
+<table class="table table-striped table-borderless mt-3">
+    <thead>
+    <tr>
+        <th scope="col" class="top-barie"></th>
+        <th scope="col" colspan="8" class="border-barie top-barie text-center stylewidth">Tin nhắn rác</th>
+        <th scope="col" colspan="8" class="border-barie top-barie text-center stylewidth">Cuộc gọi rác</th>
+        <th scope="col" colspan="" class="top-barie text-center"></th>
+    </tr>
+    <tr>
+        <th scope="col" class="text-center" style="min-width: 120px">Ngày báo cáo</th>
+        <th scope="col" colspan="2" class="top-barie text-center">Số lượng thuê bao đã thực hiện ngăn chặn</th>
+        <th scope="col" colspan="2" class="top-barie text-center">Số lượng tin nhắn rác đã chặn</th>
+        <th scope="col" colspan="4" class="border-barie top-barie text-center">Phản ánh 5656</th>
+        <th scope="col" class="top-barie text-center bottom-barie" rowspan="2">Số lượng thuê bao nghi ngờ</th>
+        <th scope="col" class="top-barie text-center bottom-barie" rowspan="2">Số lượng thuê bao đã thực hiện ngăn chặn</th>
+        <th scope="col" class="top-barie text-center bottom-barie" rowspan="2">Số cuộc  gọi phát sinh từ thuê bao nghi ngờ</th>
+        <th scope="col" class="top-barie text-center bottom-barie" rowspan="2">Số cuộc gọi phát sinh từ các thuê bao đã chặn</th>
+        <th scope="col" colspan="4" class="border-barie top-barie text-center">Phản ánh 5656</th>
+        <th scope="col">Tên nhà mạng</th>
+    </tr>
+    <tr>
+        <th scope="col" class="bottom-barie"></th>
+        <th scope="col" class="bottom-barie top-barie text-center">Nội mạng</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Ngoại mạng</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Nội mạng</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Ngoại mạng</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Tổng phản ánh</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Đã xử lý</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Đang xác minh</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Phản ánh ko hợp lệ</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Tổng phản ánh</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Đã xử lý</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Đang xác minh</th>
+        <th scope="col" class="bottom-barie top-barie text-center">Phản ánh ko hợp lệ</th>
+        <th scope="col" class="bottom-barie"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {{range .Data}}
+    <tr>
+        <td class="border-barie">{{.Date}}</td>
+        <td>{{.PhoneBlockedIntenSms}}</td>
+        <td>{{.PhoneBlockedExtenSms}}</td>
+        <td>{{.SmsBlockedInten}}</td>
+        <td>{{.SmsBlockedExten}}</td>
+        <td>{{.Total5656Sms}}</td>
+        <td >{{.Handled5656Sms}}</td>
+        <td>{{.Verify5656Sms}}</td>
+        <td class="border-barie">{{.Wrong5656Sms}}</td>
+        <td>{{.PhoneDoubtCall}}</td>
+        <td >{{.PhoneBlockedCall}}</td>
+        <td>{{.PhoneFromDoubtCall}}</td>
+        <td>{{.PhoneFromBlockedCall}}</td>
+        <td>{{.Total5656Call}}</td>
+        <td>{{.Handled5656Call}}</td>
+        <td>{{.Verify5656Call}}</td>
+        <td class="border-barie">{{.Wrong5656Call}}</td>
+        <td>{{.TelecomBrand}}</td>
+    </tr>
+    {{end}}
+    </tbody>
+
+</table>
+</div>
+</body>
+<script>
+    function changeDownload() {
+        var x = document.getElementById("telecomBrand").value;
+        //alert(x);
+        document.getElementById('download-excel').href = '/Admin/Download/Excel?brandName='+x;
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+</html>

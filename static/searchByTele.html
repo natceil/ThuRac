@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-vi">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>VNCERT/CC - 91</title>
+</head>
+
+<body>
+<h1>List of all stations</h1>
+
+<form action="/Admin/getAllDataByTelecom" method="get">
+    <label for="telecomBrand">Chọn nhà mạng:</label>
+
+    <select name="telecomBrand" id="telecomBrand">
+        <option value="null"></option>
+        <option name="mobifone" value="mobifone">Mobifone</option>
+        <option name="viettel" value="viettel">Viettel</option>
+        <option name="vinaphone" value="vinaphone">Vinaphone</option>
+        <option name="other" value="other">Other</option>
+    </select>
+
+    <button>Request</button>
+</form>
+
+<button>Download Excel</button>
+
+<table border="1" cellspacing="0">
+    <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>SmsBlockedInten</th>
+        <th>SmsBlockedExten</th>
+        <th>PhoneBlockedIntenSms</th>
+        <th>Total5656Sms</th>
+        <th>Handled5656Sms</th>
+        <th>Verify5656Sms</th>
+        <th>Wrong5656Sms</th>
+        <th>PhoneDoubtCall</th>
+        <th>PhoneBlockedCall</th>
+        <th>PhoneFromDoubtCall</th>
+        <th>PhoneFromBlockedCall</th>
+        <th>Total5656Call</th>
+        <th>Handled5656Call</th>
+        <th>Verify5656Call</th>
+        <th>TelecomBrand</th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    {{range .Data}}
+    <tr>
+        <td>{{.Id}}</td>
+        <td>{{.Date}}</td>
+        <td>{{.SmsBlockedInten}}</td>
+        <td>{{.SmsBlockedExten}}</td>
+        <td>{{.PhoneBlockedIntenSms}}</td>
+        <td>{{.Total5656Sms}}</td>
+        <td>{{.Handled5656Sms}}</td>
+        <td>{{.Verify5656Sms}}</td>
+        <td>{{.Wrong5656Sms}}</td>
+        <td>{{.PhoneDoubtCall}}</td>
+        <td>{{.PhoneBlockedCall}}</td>
+        <td>{{.PhoneFromDoubtCall}}</td>
+        <td>{{.PhoneFromBlockedCall}}</td>
+        <td>{{.Total5656Call}}</td>
+        <td>{{.Handled5656Call}}</td>
+        <td>{{.Verify5656Call}}</td>
+        <td>{{.TelecomBrand}}</td>
+        <td><a href="edit.html">Edit</a></td>
+        <td><a href="dashboard.html">Export To Chart</a></td>
+    </tr>
+    {{end}}
+</table>
+</body>
+</html>

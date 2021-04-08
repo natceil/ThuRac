@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en-vi">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <title>VNCERT/CC - 91</title>
+    <style>
+        td {
+            text-align: center;
+        }
+        td,th {
+            border-right: 1px solid #dee2e6 !important;
+            vertical-align: middle !important;
+        }
+        .top-barie {
+            border-top: 1px solid #dee2e6 !important;
+        }
+        .bottom-barie  {
+            border-bottom: 1px solid #dee2e6 !important;
+        }
+        .stylewidth {
+            max-width: 250px;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand " href="#">VNCERT - 91</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/Admin/GetData">Báo cáo dữ liệu <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Admin/Dashboard/Sms">Dữ liệu tin nhắn</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Admin/Dashboard/Call">Dữ liệu cuộc gọi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Admin/Download">Xuất dữ liệu ra file Excel</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Thống kê</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<h2 class="ml-3">Dữ liệu cuộc gọi rác</h2>
+
+<form action="/Admin/GetAllDataCallBrandByDay" method="get">
+    <div style="display: flex;flex-direction: row;padding-left: 20px;padding-top: 20px">
+        <label for="telecomBrand" style="padding-top: 5px">Chọn nhà mạng:</label>
+        <select name="telecomBrand" id="telecomBrand" class="form-control ml-4" style="max-width: 300px">
+            <option value="null"></option>
+            <option name="mobifone" value="mobifone">Mobifone</option>
+            <option name="viettel" value="viettel">Viettel</option>
+            <option name="vinaphone" value="vinaphone">Vinaphone</option>
+            <option name="vietnammobile" value="vietnammobile">Vietnammobile</option>
+            <option name="other" value="other">Other</option>
+        </select>
+
+        <label for="startDate" class=" ml-4" style="padding-top: 5px">Chọn ngày:</label>
+        <input type="date" id="startDate" name="startDate" value="DD-MM-YYYY" class="form-control ml-4" style="max-width: 300px">
+        <button type="submit" class="btn btn-primary ml-3" >Tìm kiếm</button>
+    </div>
+</form>
+
+<button type="submit" class="mt-3 mb-3 btn btn-primary ml-3" >Xuất ra file excel</button>
+
+<div class="table-responsive pl-3 pr-3">
+<table class="table table-striped table-borderless mt-3" >
+    <thead>
+    <tr>
+        <th scope="col" class="top-barie text-center"></th>
+        <th scope="col" colspan="8" class="text-center top-barie bottom-barie">Cuộc gọi rác</th>
+        <th scope="col" colspan="" class="text-center top-barie"></th>
+        <th scope="col" colspan="" class="top-barie"></th>
+    </tr>
+    <tr>
+        <th scope="col" class="text-center">Ngày báo cáo</th>
+        <th scope="col" class="text-center stylewidth bottom-barie" rowspan="2">Số lượng thuê bao nghi ngờ</th>
+        <th scope="col" class="text-center stylewidth bottom-barie" rowspan="2">Số lượng thuê bao đã thực hiện ngăn chặn</th>
+        <th scope="col" class="text-center stylewidth bottom-barie" rowspan="2">Số cuộc  gọi phát sinh từ thuê bao nghi ngờ</th>
+        <th scope="col" class="text-center stylewidth bottom-barie" rowspan="2">Số cuộc gọi phát sinh từ các thuê bao đã chặn</th>
+        <th scope="col" colspan="4" class="text-center">Phản ánh 5656</th>
+        <th scope="col" class="text-center">Tên nhà mạng</th>
+        <th scope="col" class="text-center">Hành động</th>
+    </tr>
+    <tr>
+        <th scope="col" class="border-barie bottom-barie"></th>
+        <th scope="col" class="text-center top-barie bottom-barie">Tổng phản ánh</th>
+        <th scope="col" class="text-center top-barie bottom-barie">Đã xử lý</th>
+        <th scope="col" class="text-center top-barie bottom-barie">Đang xác minh</th>
+        <th scope="col" class="text-center top-barie bottom-barie">Phản ánh ko hợp lệ</th>
+        <th scope="col" class="bottom-barie"></th>
+        <th scope="col" class="bottom-barie"></th>
+    </tr>
+    </thead>
+
+    {{range .Data}}
+    <tr>
+        <td>{{.Date}}</td>
+        <td>{{.PhoneDoubtCall}}</td>
+        <td>{{.PhoneBlockedCall}}</td>
+        <td>{{.PhoneFromDoubtCall}}</td>
+        <td>{{.PhoneFromBlockedCall}}</td>
+        <td>{{.Total5656Call}}</td>
+        <td>{{.Handled5656Call}}</td>
+        <td>{{.Verify5656Call}}</td>
+        <td>{{.Wrong5656Call}}</td>
+        <td>{{.TelecomBrand}}</td>
+        <td><a href="edit.html"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+        </svg></a></td>
+    </tr>
+    {{end}}
+</table>
+</div>
+</body>
+</html>
